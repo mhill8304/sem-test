@@ -1,6 +1,0 @@
----
-- name: Ping a host
-  hosts: all
-  tasks:
-    - name: Ensure host is reachable
-      ping:
