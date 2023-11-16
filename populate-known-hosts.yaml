@@ -1,0 +1,12 @@
+---
+- name: Populate known_hosts with SSH keys of all hosts
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Add SSH host key to known_hosts
+      become: no
+      delegate_to: localhost
+      known_hosts:
+        name: "{{ inventory_hostname }}"
+        key: "{{ lookup('pipe', 'ssh-keyscan ' + inventory_hostname) }}"
+        state: present
