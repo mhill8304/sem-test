@@ -1,12 +1,29 @@
+#---
+#- name: Populate known_hosts with SSH keys of all hosts
+#  hosts: all
+#  gather_facts: no
+#  tasks:
+#    - name: Add SSH host key to known_hosts
+#      become: no
+#      delegate_to: localhost
+#      known_hosts:
+#        name: "{{ ansible_host }}"
+#        key: "{{ lookup('pipe', 'ssh-keyscan ' + inventory_hostname) }}"
+#        state: present
+
 ---
-- name: Populate known_hosts with SSH keys of all hosts
+- name: Collect ansible_host values and write to a file
   hosts: all
   gather_facts: no
+
   tasks:
-    - name: Add SSH host key to known_hosts
-      become: no
+    - name: Gather ansible_host for each host
+      set_fact:
+        host_list: "{{ groups['all'] | map('extract', hostvars, 'ansible_host') | list }}"
+
+    - name: Write hosts to a file
       delegate_to: localhost
-      known_hosts:
-        name: "{{ ansible_host }}"
-        key: "{{ lookup('pipe', 'ssh-keyscan ' + inventory_hostname) }}"
-        state: present
+      copy:
+        content: "{{ host_list | join(',') }}"
+        dest: "/tmp/semaphore/host_list"
+      run_once: true
