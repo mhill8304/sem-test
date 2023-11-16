@@ -2,6 +2,7 @@
 - name: Get Kernel Version
   hosts: all
   gather_facts: false
+  connection: libssh
   
   tasks:
     - name: Run uname -r to get kernel version
