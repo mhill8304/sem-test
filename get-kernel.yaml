@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: Run uname -r to get kernel version
-      ansible.builtin.command: uname -r
+      ansible.builtin.command: ifconfig
       register: kernel_version
 
     - name: Print kernel version
