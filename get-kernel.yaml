@@ -2,9 +2,11 @@
 - name: Get Kernel Version
   hosts: all
   gather_facts: false
+  connection: paramiko
+  
   tasks:
     - name: Run uname -r to get kernel version
-      ansible.builtin.command: ifconfig
+      ansible.builtin.command: uname -r
       register: kernel_version
 
     - name: Print kernel version
