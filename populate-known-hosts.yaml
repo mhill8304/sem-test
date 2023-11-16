@@ -7,6 +7,6 @@
       become: no
       delegate_to: localhost
       known_hosts:
-        name: "{{ inventory_hostname }}"
+        name: "{{ ansible_host }}"
         key: "{{ lookup('pipe', 'ssh-keyscan ' + inventory_hostname) }}"
         state: present
